@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/layout :: head">
+    <title>Home</title>
+</head>
+<body>
+<div class="container-fluid">
+    <h1>List Product</h1>
+    <button type="button"><a href="/product/create">ADD NEW PRODUCT</a></button>
+</div>
+<div class="container-fluid">
+    <form th:action="@{/product/search}" method="post">
+        <label><input type='search' id="name" name="name" placeholder="Enter keyword"></label>
+        <button type="submit">Search</button>
+    </form>
+</div>
+
+
+<div class="container-fluid">
+    <table id="products">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Category</th>
+            <th colspan="3"></th>
+        </tr>
+        <tr th:each="product : ${products}">
+            <td th:text="${product.getId()}"></td>
+            <td th:text="${product.getName()}"></td>
+            <td th:text="${product.getPrice()}"></td>
+            <td th:text="${product.getCategory()}"></td>
+            <td>
+                <a th:href="@{/product/{id}/edit(id=${product.getId()})}">EDIT</a>
+            </td>
+            <td>
+                <a th:href="@{/product/{id}/delete(id=${product.getId()})}">DELETE</a>
+            </td>
+            <td>
+                <a th:href="@{/product/{id}/view(id=${product.getId()})}">VIEW</a>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+</body>
+</html>
