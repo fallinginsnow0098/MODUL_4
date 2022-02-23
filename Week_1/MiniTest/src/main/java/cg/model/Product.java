@@ -13,6 +13,16 @@ public class Product {
     private String description;
     private String imageURL;
 
+    public Product() {
+    }
+
+    public Product(String name, double price, String description, String imageURL) {
+        this.name = name;
+        this.price = price;
+        this.description = description;
+        this.imageURL = imageURL;
+    }
+
     public int getId() {
         return id;
     }

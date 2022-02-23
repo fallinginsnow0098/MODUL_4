@@ -26,21 +26,19 @@
             <th>Price</th>
             <th>Description</th>
             <th>Image</th>
-            <th>Edit</th>
-            <th>Delete</th>
-            <th>Detail</th>
+            <th colspan="3">Button</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="product,productState : ${products}">
-            <td th:text="${product.getName()()}"></td>
+        <tr th:each="product : ${products}">
+            <td th:text="${product.getName()}"></td>
             <td th:text="${product.getPrice()}"></td>
             <td th:text="${product.getDescription()}"></td>
-            <td><img th:src="${product.getImageURL()}" alt="Bugs"></td>
+            <td><img th:src="${product.getImageURL()}" alt="Bugs" src=""></td>
 
             <td><a th:href="@{/product/edit/{id}(id=${product.getId()})}">Edit</a></td>
             <td><a th:href="@{/product/delete/{id}(id=${product.getId()})}"
-                   onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')">Delete</a></td>
+                   onclick="return confirm('Are you sure?')">Delete</a></td>
             <td><a th:href="@{/product/view/{id}(id=${product.getId()})}">Detail</a></td>
         </tr>
         </tbody>
