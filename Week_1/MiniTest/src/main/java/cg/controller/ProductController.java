@@ -48,6 +48,16 @@ public class ProductController {
         }
         return mav;
     }
+    @GetMapping("/search")
+    public ModelAndView search(@RequestParam(name = "keyword", required = false)String keyword){
+        ModelAndView mav = new ModelAndView("products");
+        ArrayList<Product> products = productService.findByKeyword(keyword);
+        if (products.isEmpty()){
+            mav.addObject("message", "Keyword INVALID!");
+        }
+        mav.addObject("products", products);
+        return mav;
+    }
     @GetMapping("/create")
     public ModelAndView createProduct(Model model){
         ModelAndView mav = new ModelAndView("create");

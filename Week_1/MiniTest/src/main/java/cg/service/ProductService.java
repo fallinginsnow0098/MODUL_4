@@ -22,6 +22,11 @@ public class ProductService implements IProductService{
     }
 
     @Override
+    public ArrayList<Product> findByKeyword(String keyword) {
+        return productRepository.findByKeyword(keyword);
+    }
+
+    @Override
     public Product save(Product product) {
         return productRepository.saveProduct(product);
     }

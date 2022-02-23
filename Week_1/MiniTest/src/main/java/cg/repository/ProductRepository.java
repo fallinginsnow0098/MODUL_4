@@ -36,6 +36,14 @@ public class ProductRepository implements IProductRepository{
     }
 
     @Override
+    public ArrayList<Product> findByKeyword(String keyword) {
+        String QUERY_SELECT_BY_KEYWORD = "SELECT p FROM Product AS p WHERE p.name LIKE :keyword";
+        TypedQuery<Product> findByKeywordQuery = entityManager.createQuery(QUERY_SELECT_BY_KEYWORD, Product.class);
+        findByKeywordQuery.setParameter("keyword", keyword);
+        return (ArrayList<Product>) findByKeywordQuery.getResultList();
+    }
+
+    @Override
     public Product saveProduct(Product product) {
         Transaction transaction = null;
         Product origin;
@@ -61,6 +69,7 @@ public class ProductRepository implements IProductRepository{
         }
         return null;
     }
+
 
     @Override
     public Product deleteProduct(int id) {
