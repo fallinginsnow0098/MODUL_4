@@ -19,7 +19,7 @@
 </h3>
 <br>
 <form th:action="@{/product/search}" method="post">
-    <label><input type='search' id="name" name="keyword" placeholder="Enter keyword"></label>
+    <label><input type='search' id="name" name="keyword" placeholder="Enter keyword" th:value="keyword"></label>
     <button type="submit">Search</button>
 </form>
 

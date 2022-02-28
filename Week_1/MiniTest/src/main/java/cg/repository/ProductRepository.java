@@ -29,8 +29,8 @@ public class ProductRepository implements IProductRepository{
     }
     @Override
     public Product findProductById(int id) {
-        String QUERY_SELECT_BY_ID = "SELECT p FROM Product AS p WHERE p.id = :id ";
-        TypedQuery<Product> findByIdQuery = entityManager.createQuery(QUERY_SELECT_BY_ID, Product.class);
+//        String QUERY_SELECT_BY_ID = "SELECT p FROM Product AS p WHERE p.id = :id ";
+        TypedQuery<Product> findByIdQuery = entityManager.createNamedQuery("find-product-by-id", Product.class);
         findByIdQuery.setParameter("id", id);
         return findByIdQuery.getSingleResult();
     }
@@ -39,7 +39,7 @@ public class ProductRepository implements IProductRepository{
     public ArrayList<Product> findByKeyword(String keyword) {
         String QUERY_SELECT_BY_KEYWORD = "SELECT p FROM Product AS p WHERE p.name LIKE :keyword";
         TypedQuery<Product> findByKeywordQuery = entityManager.createQuery(QUERY_SELECT_BY_KEYWORD, Product.class);
-        findByKeywordQuery.setParameter("keyword", keyword);
+        findByKeywordQuery.setParameter("keyword", "%" + keyword+ "%");
         return (ArrayList<Product>) findByKeywordQuery.getResultList();
     }
 

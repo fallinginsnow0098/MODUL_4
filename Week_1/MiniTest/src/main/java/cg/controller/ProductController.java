@@ -3,11 +3,16 @@ package cg.controller;
 import cg.model.Product;
 import cg.service.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 @Controller
@@ -16,6 +21,10 @@ public class ProductController {
     @Autowired
     private IProductService productService;
 
+    @Value("${file-upload}")
+    private String fileUpload;
+    @Value("${view}")
+    private String view;
     @GetMapping
     public ModelAndView showAllProducts(){
         ModelAndView mav = new ModelAndView("products");
@@ -48,8 +57,8 @@ public class ProductController {
         }
         return mav;
     }
-    @GetMapping("/search")
-    public ModelAndView search(@RequestParam(name = "keyword", required = false)String keyword){
+    @GetMapping("/search/")
+    public ModelAndView search(@RequestParam("keyword") String keyword){
         ModelAndView mav = new ModelAndView("products");
         ArrayList<Product> products = productService.findByKeyword(keyword);
         if (products.isEmpty()){
@@ -58,9 +67,23 @@ public class ProductController {
         mav.addObject("products", products);
         return mav;
     }
+
+
     @GetMapping("/create")
-    public ModelAndView createProduct(Model model){
+    public ModelAndView createProduct(@ModelAttribute Product product){
         ModelAndView mav = new ModelAndView("create");
+        MultipartFile file = product.getFile();
+        String fileName = file.getOriginalFilename();
+        try {
+            FileCopyUtils.copy(product.getFile().getBytes(), new File(fileUpload + fileName));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        product.setImageURL("image//" + fileName);
+        Product createProduct =  productService.save(product);
+        if (createProduct != null){
+            mav.addObject("message", "Create success !!");
+        }
         mav.addObject("product", new Product());
         return mav;
     }
@@ -75,14 +98,25 @@ public class ProductController {
         }
         return mav;
     }
-    @GetMapping("/edit/{id}")
-    public ModelAndView editProduct(@PathVariable("id") int id){
+    @PostMapping("/edit/{id}")
+    public ModelAndView editProduct(@ModelAttribute Product product, @PathVariable int id){
         ModelAndView mav = new ModelAndView("edit");
-        Product product = productService.findById(id);
-        if (product != null){
-            mav.addObject("product", product);
+        product.setId(id);
+        if (product.getFile().getSize() != 0){
+            MultipartFile multipartFile = product.getFile();
+            String fileName = multipartFile.getOriginalFilename();
+            try {
+                FileCopyUtils.copy(product.getFile().getBytes(), new File(fileUpload + fileName));
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+            product.setImageURL("image/" + fileName);
         } else {
-            mav.addObject("message", "ID INVALID!");
+            product.setImageURL(productService.findById(id).getImageURL());
+        }
+        Product editProduct = productService.save(product);
+        if (editProduct != null){
+            mav.addObject("message", "UPDATE SUCCESS!!");
         }
         return mav;
     }

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+<h1>Home</h1>
+<div>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Class Name</th>
+            <th>View</th>
+        </tr>
+        <tr th:each="student : ${students}">
+            <td th:text="${student.getId()}"></td>
+            <td th:text="${student.getName()}"></td>
+            <td th:text="${student.getAddress()}"></td>
+            <td th:text="${student.getClasses().getClassName()}"></td>
+            <td><a th:href="@{/home/{id}(id=${student.getId()})}">View</a></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

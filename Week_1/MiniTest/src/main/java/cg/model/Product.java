@@ -1,9 +1,12 @@
 package cg.model;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "product")
+@NamedQuery(name = "find-product-by-id", query = "select p from Product as p where p.id = :id")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,6 +15,9 @@ public class Product {
     private double price;
     private String description;
     private String imageURL;
+
+    @Transient
+    private MultipartFile file;
 
     public Product() {
     }
@@ -61,5 +67,13 @@ public class Product {
 
     public void setImageURL(String imageURL) {
         this.imageURL = imageURL;
+    }
+
+    public MultipartFile getFile() {
+        return file;
+    }
+
+    public void setFile(MultipartFile file) {
+        this.file = file;
     }
 }
