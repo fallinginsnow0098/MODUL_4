@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <h1 th:text="${message}"></h1>
+</div>
+<div>
+    <form th:action="@{/human/search}" method="post">
+        <label>Search by name:
+            <input type="text" th:value="${search}" name="search">
+        </label>
+        <button type="submit">Search</button>
+    </form>
+</div>
+<div>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th>ID Card</th>
+            <th>Button</th>
+        </tr>
+        <tr th:each="human : ${humans}">
+            <td th:text="${human.getName()}"></td>
+            <td th:text="${human.getPhone()}"></td>
+            <td th:text="${human.getAddress()}"></td>
+            <td th:text="${human.getIdCard()}"></td>
+            <td><a th:href="@{/human/detail/{id}(id=${human.getId()})}">DETAIL</a></td>
+            <td><a th:href="@{/human/edit/{id}(id=${human.getId()})}">EDIT</a></td>
+        </tr>
+    </table>
+</div>
+<div>
+    <a th:href="@{/human(page=${humans.number - 1})}" th:if="${humans.hasPrevious()}"><span> < </span></a>
+    <span th:text=" ${humans.number + 1} + '/' + ${humans.totalPages} "></span>
+    <a th:href="@{/human(page=${humans.number + 1})}" th:if="${humans.hasNext()}"><span> > </span></a>
+
+</div>
+<div>
+    <a th:href="@{/human/create}">Create new</a>
+</div>
+</body>
+</html>

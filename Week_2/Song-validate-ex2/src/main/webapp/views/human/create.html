@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:action="@{/human/create}" method="post" th:object="${human}">
+    <label>
+        Name: <input type="text" th:field="*{name}">
+        <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+    </label>
+    <label>
+        Phone: <input type="text" th:field="*{phone}">
+        <p th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></p>
+    </label>
+    <label>
+        Address: <input type="text" th:field="*{address}">
+        <p th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></p>
+    </label>
+    <label>
+        ID card: <input type="text" th:field="*{idCard}">
+        <p th:if="${#fields.hasErrors('idCard')}" th:errors="*{idCard}"></p>
+    </label>
+    <button type="submit">EDIT</button>
+</form>
+</body>
+</html>
