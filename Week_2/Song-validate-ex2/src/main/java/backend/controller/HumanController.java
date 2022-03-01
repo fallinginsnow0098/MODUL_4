@@ -4,8 +4,11 @@ import backend.model.Human;
 import backend.service.IHumanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -90,5 +95,28 @@ public class HumanController {
         Page<Human> humans = humanService.findByName(pageable, search);
         modelAndView.addObject("humans", humans);
         return modelAndView;
+    }
+    @GetMapping("/sort")
+    public ModelAndView sort(Pageable pageable){
+        ModelAndView modelAndView = new ModelAndView("index");
+        Page<Human> humans = humanService.findAll(pageable);
+        modelAndView.addObject("humans", humans);
+        return modelAndView;
+    }
+
+    @GetMapping("/asc")
+    public ModelAndView sortByAsc(@SortDefault(sort = "name", direction = Sort.Direction.ASC)@PageableDefault Pageable pageable) {
+        ModelAndView modelAndView = new ModelAndView("index");
+        Page<Human> humans = humanService.findAll(pageable);
+        modelAndView.addObject("humans", humans);
+        return  modelAndView;
+    }
+
+    @GetMapping("/desc")
+    public ModelAndView sortByDesc(@SortDefault(sort = "name", direction = Sort.Direction.DESC)@PageableDefault Pageable pageable) {
+        ModelAndView modelAndView = new ModelAndView("index");
+        Page<Human> humans = humanService.findAll(pageable);
+        modelAndView.addObject("humans", humans);
+        return  modelAndView;
     }
 }
