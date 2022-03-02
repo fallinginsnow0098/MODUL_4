@@ -12,11 +12,13 @@ public class Song {
     private long id;
     private String name;
     private String fileURL;
-    @Transient
-    private MultipartFile file;
+
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @Transient
+    private MultipartFile file;
 
     public Song() {
     }
@@ -45,19 +47,19 @@ public class Song {
         this.fileURL = fileURL;
     }
 
-    public MultipartFile getFile() {
-        return file;
-    }
-
-    public void setFile(MultipartFile file) {
-        this.file = file;
-    }
-
     public Category getCategory() {
         return category;
     }
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public MultipartFile getFile() {
+        return file;
+    }
+
+    public void setFile(MultipartFile file) {
+        this.file = file;
     }
 }
