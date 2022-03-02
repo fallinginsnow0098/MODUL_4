@@ -80,6 +80,15 @@ public class HomeController {
         Optional<Song> song = songService.findById(id);
         song.ifPresent(value -> modelAndView.addObject("song", value));
         modelAndView.addObject("categories", categoryService.findAll());
+        modelAndView.addObject("view", view);
+        return modelAndView;
+    }
+    @PostMapping("/edit/{id}")
+    public ModelAndView editSong(@PathVariable("id")long id, @ModelAttribute("song")Song song, Pageable pageable){
+        ModelAndView modelAndView = new ModelAndView("index");
+        song.setId(id);
+        songService.save(song);
+        modelAndView.addObject("songs", songService.findAll(pageable));
         return modelAndView;
     }
     @GetMapping("/search")
@@ -90,5 +99,4 @@ public class HomeController {
         modelAndView.addObject("view", view);
         return modelAndView;
     }
-//    @GetMapping("/search/{search}")
 }

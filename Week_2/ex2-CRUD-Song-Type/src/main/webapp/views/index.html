@@ -6,6 +6,10 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
@@ -17,19 +21,24 @@
     <title>Home</title>
 </head>
 <body>
-<div class="container-fluid">
-    <div class="table-responsive" th:if="${songs.isEmpty() == false}">
+<nav class="navbar navbar-inverse" th:fragment="header">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" th:href="@{/home}">Music free</a>
+        </div>
         <div class="col-md-3">
             <p><a th:href="@{/home/create-song}" style="text-decoration: none">Create new Song</a></p>
         </div>
-        <div class="col-md-3">
-            <form th:action="@{/home/search}">
-                <label>
-                    <input type="text" th:name="search" placeholder="Enter keyword">
-                </label>
-                <button type="submit">Search</button>
-            </form>
-        </div>
+        <form th:action="@{/home/search}" class="navbar-form navbar-right">
+            <label>
+                <input type="text" th:name="search" placeholder="Enter keyword">
+            </label>
+            <button type="submit">Search</button>
+        </form>
+    </div>
+</nav>
+<div class="container-fluid">
+    <div class="table-responsive" th:if="${songs.isEmpty() == false}">
         <table class="table">
             <thead>
             <tr>
@@ -43,7 +52,9 @@
             <tr th:each="s : ${songs}">
                 <td th:text="${s.getName()}"></td>
                 <td th:text="${s.getCategory().getCategory()}"></td>
-                <td><audio th:src="@{${view} + ${s.getFileURL()}}"  controls></audio></td>
+                <td>
+                    <audio th:src="@{${view} + ${s.getFileURL()}}" controls></audio>
+                </td>
                 <td><a th:href="@{/home/delete/{id}(id=${s.getId()})}">Delete</a></td>
                 <td><a th:href="@{/home/edit/{id}(id=${s.getId()})}">Edit</a></td>
             </tr>

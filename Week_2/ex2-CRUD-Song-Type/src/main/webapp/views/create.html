@@ -4,6 +4,8 @@
     <title>Create new song</title>
 </head>
 <body>
+<div th:replace="index.html :: header">
+</div>
 <div class="container-fluid col-md-6">
     <form th:action="@{/home/create-new-song}" th:object="${song}" method="post" enctype="multipart/form-data">
         <div class="mb-3">Name:
