@@ -82,11 +82,12 @@ public class HomeController {
         modelAndView.addObject("categories", categoryService.findAll());
         return modelAndView;
     }
-    @GetMapping("/search/{search}")
-    public ModelAndView search(@PathVariable("search") String search, Pageable pageable){
+    @GetMapping("/search")
+    public ModelAndView search(@RequestParam("search") String search, Pageable pageable){
         ModelAndView modelAndView = new ModelAndView("index");
         Page<Song> songs = songService.findByName(pageable, search);
         modelAndView.addObject("songs", songs);
+        modelAndView.addObject("view", view);
         return modelAndView;
     }
 //    @GetMapping("/search/{search}")
